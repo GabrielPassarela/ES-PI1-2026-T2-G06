@@ -116,7 +116,30 @@ def listar_candidatos():
     print("\n  Em desenvolvimento.")
 
 def autenticar_mesario():
-    print("\n  Em desenvolvimento.")
+    titulo_eleitor = input("digite seu titulo de eleitor: ")
+    cpf = input("digite os 4 primeiros dígitos do seu cpf: ")
+    chave = input("digite a chave de acesso: ")
+    conn = database.conectar()
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute("SELECT * FROM eleitores WHERE titulo_eleitor = %s AND cpf LIKE %s AND chave_acesso = %s AND mesário = 1", (titulo_eleitor, f"{cpf}%", chave))
+        eleitor = cursor.fetchone()
+        if eleitor:
+            print("Autenticação bem-sucedida! Bem-vindo, mesário.")
+            cursor.execute("DELETE FROM VOTOS")
+            conn.commit()
+            cursor.execute("SELECT * FROM CANDIDATOS")
+            resultados = cursor.fetchall()
+            for candidato in resultados:
+             print(f"Candidato: {candidato['nome']} - Votos: 0")
+        else:
+            print("Dados inválidos ou usuário não é mesário.")
+    except Exception as e:
+        print(f"Erro: {e}")
+    finally:
+        cursor.close()
+        conn.close()
+
 
 def registrar_voto():
     print("\n  Em desenvolvimento.")

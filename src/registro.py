@@ -4,7 +4,7 @@ import random
 conexao = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="1234",
+    password="11121976jR@",
     database="projeto_integrador"
 )
 
